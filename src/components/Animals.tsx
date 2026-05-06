@@ -129,53 +129,95 @@ export default function Animals({ onBack }: { onBack: () => void }) {
         </div>
       </header>
 
-      <div className="flex-1 flex flex-col items-center justify-start p-4 md:p-8 space-y-4 md:space-y-6 overflow-y-auto custom-scrollbar">
+      <div className="flex-1 flex flex-col items-center justify-start p-3 md:p-6 space-y-4 overflow-y-auto custom-scrollbar">
         
         <AnimatePresence mode="wait">
           <motion.div 
             key={animal.id}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            className="flex flex-col items-center w-full max-w-4xl space-y-6 md:space-y-8"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            className="flex flex-col items-center w-full max-w-2xl space-y-4"
           >
-            {/* Animal Icon Display */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={speakFullName}
-              className="text-[7rem] md:text-[14rem] leading-none drop-shadow-xl animate-float cursor-pointer select-none mb-2 md:mb-4"
-            >
-              {animal.icon}
-            </motion.button>
+            {/* Header / Intro */}
+            <div className="text-center">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Toque no animal para ouvir</p>
+            </div>
 
-            <span className="text-lg md:text-xl font-kids font-black text-slate-800 uppercase tracking-tight text-center">
+            {/* Animal Display with Navigation */}
+            <div className="flex items-center justify-center gap-4 md:gap-8 w-full max-w-lg">
+                <motion.button
+                  whileTap={{ scale: 0.8 }}
+                  onClick={handlePrev}
+                  className="p-4 bg-white rounded-full text-brand-mint shadow-sm shrink-0 border-2 border-slate-50"
+                >
+                   <ArrowLeft className="w-6 h-6" />
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={speakFullName}
+                  className="flex-1 aspect-square max-w-[220px] bg-white rounded-[40px] border-4 border-brand-mint flex items-center justify-center text-[7rem] md:text-[10rem] shadow-sm select-none cursor-pointer"
+                >
+                  {animal.icon}
+                </motion.button>
+
+                <motion.button
+                  whileTap={{ scale: 0.8 }}
+                  onClick={handleNext}
+                  className="p-4 bg-white rounded-full text-brand-mint shadow-sm shrink-0 border-2 border-slate-50 rotate-180"
+                >
+                   <ArrowLeft className="w-6 h-6" />
+                </motion.button>
+            </div>
+
+            {/* Name and Basic Actions */}
+            <div className="flex flex-col items-center w-full gap-2">
+              <h3 className="text-2xl md:text-4xl font-kids font-black text-slate-800 uppercase tracking-tight">
                 {animal.name}
-                <span className="block text-[10px] md:text-xs font-black text-slate-300 uppercase tracking-[0.2em] animate-pulse mt-1 md:mt-2">
-                    Toque para ouvir
-                </span>
-            </span>
+              </h3>
+              
+              <div className="flex gap-2">
+                <button 
+                  onClick={speakFullName}
+                  className="flex items-center gap-2 px-4 py-2 bg-brand-mint text-white rounded-xl font-bold text-xs uppercase"
+                >
+                  <Volume2 className="w-4 h-4" /> Ouvir
+                </button>
+                <button 
+                  onClick={speakLetterByLetter}
+                  className="flex items-center gap-2 px-4 py-2 bg-brand-blue text-white rounded-xl font-bold text-xs uppercase"
+                >
+                  <Type className="w-4 h-4" /> Soletrar
+                </button>
+                <button 
+                  onClick={speakSyllables}
+                  className="flex items-center gap-2 px-4 py-2 bg-brand-yellow text-white rounded-xl font-bold text-xs uppercase"
+                >
+                  <Layers className="w-4 h-4" /> Sílabas
+                </button>
+              </div>
+            </div>
 
-            {/* Word Representation */}
-            <div className="flex flex-col items-center gap-6 md:gap-8 w-full">
-                
+            <div className="w-full h-px bg-slate-100" />
+
+            {/* Details (Letters/Syllables) */}
+            <div className="flex flex-col items-center gap-6 w-full pb-8">
                 {/* Letters Container */}
-                <div className="flex flex-col items-center space-y-3 md:space-y-4 w-full">
-                  <span className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">Toque nas letras</span>
-                  <div className="flex flex-wrap justify-center gap-2 md:gap-4">
+                <div className="flex flex-col items-center space-y-2 w-full">
+                  <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Letras</span>
+                  <div className="flex flex-wrap justify-center gap-1.5 md:gap-3">
                     {animal.letters.map((char, idx) => (
                       <motion.button
                         key={`${animal.id}-char-${idx}`}
-                        whileHover={{ y: -5 }}
-                        whileTap={{ scale: 0.8 }}
                         onClick={() => onLetterClick(char, idx)}
                         animate={{ 
-                          scale: activeLetter === idx || highlightWord ? 1.15 : 1,
+                          scale: activeLetter === idx || highlightWord ? 1.1 : 1,
                           backgroundColor: activeLetter === idx || highlightWord ? '#D1FAE5' : '#FFFFFF',
-                          borderColor: activeLetter === idx || highlightWord ? '#10B981' : '#E2E8F0',
-                          color: activeLetter === idx || highlightWord ? '#065F46' : '#1E293B'
+                          borderColor: activeLetter === idx || highlightWord ? '#10B981' : '#F1F5F9',
                         }}
-                        className="w-10 h-10 md:w-20 md:h-20 flex items-center justify-center text-xl md:text-5xl font-black rounded-xl md:rounded-2xl border-2 md:border-4 shadow-sm transition-all"
+                        className="w-9 h-9 md:w-14 md:h-14 flex items-center justify-center text-lg md:text-2xl font-black rounded-xl border-2 shadow-sm transition-all"
                       >
                         {char}
                       </motion.button>
@@ -183,25 +225,20 @@ export default function Animals({ onBack }: { onBack: () => void }) {
                   </div>
                 </div>
 
-                <div className="w-full h-px bg-slate-200 max-w-md mx-auto" />
-
                 {/* Syllables Container */}
-                <div className="flex flex-col items-center space-y-3 md:space-y-4">
-                    <span className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">Toque nas sílabas</span>
-                    <div className="flex flex-wrap justify-center gap-2 md:gap-4">
+                <div className="flex flex-col items-center space-y-2">
+                    <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Sílabas</span>
+                    <div className="flex flex-wrap justify-center gap-2 md:gap-3">
                         {animal.syl.map((s, idx) => (
                             <motion.button
                                 key={`${animal.id}-syl-${idx}`}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.9 }}
                                 onClick={() => onSyllableClick(s, idx)}
                                 animate={{ 
                                     scale: activeSyllable === idx ? 1.1 : 1,
-                                    borderColor: activeSyllable === idx ? '#3B82F6' : '#FFFFFF',
+                                    borderColor: activeSyllable === idx ? '#3B82F6' : '#F1F5F9',
                                     backgroundColor: activeSyllable === idx ? '#DBEAFE' : '#FFFFFF',
-                                    color: activeSyllable === idx ? '#1E40AF' : '#334155'
                                 }}
-                                className="px-5 md:px-8 py-2 md:py-4 text-xl md:text-4xl font-black rounded-2xl md:rounded-3xl border-2 md:border-4 shadow-sm"
+                                className="px-4 md:px-6 py-2 text-base md:text-xl font-black rounded-xl border-2 shadow-sm"
                             >
                                 {s}
                             </motion.button>
@@ -209,85 +246,8 @@ export default function Animals({ onBack }: { onBack: () => void }) {
                     </div>
                 </div>
             </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col md:grid md:grid-cols-3 gap-3 md:gap-4 w-full pt-2 md:pt-4">
-                <motion.button 
-                    whileTap={{ scale: 0.95 }}
-                    onClick={speakFullName}
-                    className="flex items-center justify-center gap-3 p-4 md:p-6 bg-brand-mint text-white rounded-2xl md:rounded-[32px] shadow-md md:shadow-lg border-b-4 md:border-b-8 border-brand-mint-text/20"
-                >
-                    <Volume2 className="w-6 h-6 md:w-8 md:h-8" />
-                    <div className="text-left">
-                        <span className="block text-[8px] md:text-[10px] font-black uppercase tracking-widest opacity-80 leading-none">Escutar</span>
-                        <span className="text-base md:text-xl font-black uppercase leading-tight">Ouvir nome</span>
-                    </div>
-                </motion.button>
-
-                <motion.button 
-                    whileTap={{ scale: 0.95 }}
-                    onClick={speakLetterByLetter}
-                    className="flex items-center justify-center gap-3 p-4 md:p-6 bg-brand-blue text-white rounded-2xl md:rounded-[32px] shadow-md md:shadow-lg border-b-4 md:border-b-8 border-brand-blue-text/20"
-                >
-                    <Type className="w-6 h-6 md:w-8 md:h-8" />
-                    <div className="text-left">
-                        <span className="block text-[8px] md:text-[10px] font-black uppercase tracking-widest opacity-80 leading-none">Soletrar</span>
-                        <span className="text-base md:text-xl font-black uppercase leading-tight">Letra por Letra</span>
-                    </div>
-                </motion.button>
-
-                <motion.button 
-                    whileTap={{ scale: 0.95 }}
-                    onClick={speakSyllables}
-                    className="flex items-center justify-center gap-3 p-4 md:p-6 bg-brand-yellow text-white rounded-2xl md:rounded-[32px] shadow-md md:shadow-lg border-b-4 md:border-b-8 border-brand-yellow-text/20"
-                >
-                    <Layers className="w-6 h-6 md:w-8 md:h-8" />
-                    <div className="text-left">
-                        <span className="block text-[8px] md:text-[10px] font-black uppercase tracking-widest opacity-80 leading-none">Pedacinhos</span>
-                        <span className="text-base md:text-xl font-black uppercase leading-tight">Ouvir Sílabas</span>
-                    </div>
-                </motion.button>
-            </div>
           </motion.div>
         </AnimatePresence>
-
-        {/* Navigation - Bottom Area */}
-        <div className="flex items-center justify-between w-full max-w-4xl pt-4 md:pt-8 pb-8 md:pb-12 mt-auto">
-            <motion.button
-                whileHover={{ x: -10 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={handlePrev}
-                className="flex items-center gap-2 md:gap-3 p-4 md:p-6 bg-white rounded-2xl md:rounded-[32px] text-brand-mint-text shadow-sm border-2 md:border-4 border-white font-black uppercase tracking-widest"
-            >
-                <ArrowLeft className="w-6 h-6 md:w-8 md:h-8" />
-                <span className="hidden sm:inline">Anterior</span>
-            </motion.button>
-
-            <div className="flex gap-1 md:gap-2 max-w-[120px] md:max-w-none overflow-hidden">
-                <div className="flex gap-1 md:gap-2 transition-transform duration-300">
-                    {ANIMALS.map((_, idx) => (
-                        <div 
-                            key={idx}
-                            className={cn(
-                                "w-2 h-2 md:w-3 md:h-3 rounded-full transition-all shrink-0",
-                                currentIndex === idx ? "bg-brand-mint w-4 md:w-6" : "bg-slate-200"
-                            )}
-                        />
-                    ))}
-                </div>
-            </div>
-
-            <motion.button
-                whileHover={{ x: 10 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={handleNext}
-                className="flex items-center gap-2 md:gap-3 p-4 md:p-6 bg-white rounded-2xl md:rounded-[32px] text-brand-mint-text shadow-sm border-2 md:border-4 border-white font-black uppercase tracking-widest"
-            >
-                <span className="hidden sm:inline">Próximo</span>
-                <ArrowRight className="w-6 h-6 md:w-8 md:h-8" />
-            </motion.button>
-        </div>
-
       </div>
     </div>
   );

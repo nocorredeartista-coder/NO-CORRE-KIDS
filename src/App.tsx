@@ -13,7 +13,8 @@ import {
   Wind, 
   Pencil, 
   Calendar,
-  Settings
+  Settings,
+  Hash
 } from 'lucide-react';
 import { SensoryProvider, useSensory } from './contexts/SensoryContext';
 import { ParentProvider, useParent } from './contexts/ParentContext';
@@ -29,6 +30,7 @@ import Routine from './components/Routine';
 import FreeDraw from './components/FreeDraw';
 import SpeechModule from './components/SpeechModule';
 import ParentArea from './components/ParentArea';
+import Numbers from './components/Numbers';
 
 export default function App() {
   return (
@@ -60,6 +62,7 @@ function AppContent() {
       case 'routine': return <Routine onBack={handleBack} />;
       case 'draw': return <FreeDraw onBack={handleBack} />;
       case 'speech': return <SpeechModule onBack={handleBack} />;
+      case 'numbers': return <Numbers onBack={handleBack} />;
       case 'parents': return <ParentArea onBack={handleBack} />;
       default: return <Home onSelect={setCurrentActivity} />;
     }
@@ -72,8 +75,8 @@ function AppContent() {
     )}>
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-10">
-        <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-brand-lilac blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-brand-blue blur-3xl" />
+        <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-brand-lilac blur-3xl invisible md:visible" />
+        <div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-brand-blue blur-3xl invisible md:visible" />
       </div>
 
       <AnimatePresence mode="wait">
@@ -83,7 +86,7 @@ function AppContent() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="flex-1 w-full max-w-7xl mx-auto p-2 md:p-8 z-10 overflow-hidden"
+          className="flex-1 w-full max-w-[1100px] mx-auto px-3 md:px-6 py-2 md:py-8 z-10 overflow-y-auto custom-scrollbar flex flex-col"
         >
           {renderActivity()}
         </motion.main>
@@ -118,6 +121,7 @@ function Home({ onSelect }: { onSelect: (activity: ActivityType) => void }) {
     { id: 'emotions', label: 'Emoções', icon: Heart, bg: 'bg-brand-pink', text: 'text-brand-pink-text', emoji: '💜' },
     { id: 'breathe', label: 'Respirar', icon: Wind, bg: 'bg-brand-indigo', text: 'text-brand-indigo-text', emoji: '🌙' },
     { id: 'draw', label: 'Desenhar', icon: Pencil, bg: 'bg-brand-orange', text: 'text-brand-orange-text', emoji: '🖍️' },
+    { id: 'numbers', label: 'Números', icon: Hash, bg: 'bg-brand-lilac', text: 'text-brand-lilac-text', emoji: '🔢' },
     { id: 'routine', label: 'Rotina', icon: Calendar, bg: 'bg-brand-stone', text: 'text-brand-stone-text', emoji: '☀️' },
   ];
 
@@ -176,7 +180,7 @@ function Home({ onSelect }: { onSelect: (activity: ActivityType) => void }) {
         </div>
       </header>
 
-      <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full px-4 overflow-y-auto pb-4">
+      <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full px-2">
         {activities.map((act, idx) => (
           <motion.button
             key={act.id}
@@ -195,12 +199,12 @@ function Home({ onSelect }: { onSelect: (activity: ActivityType) => void }) {
               damping: 20 
             }}
             className={cn(
-              "group relative flex flex-col items-center justify-center p-6 md:p-8 rounded-[32px] md:rounded-[40px] shadow-sm border-4 border-white transition-all",
+              "group relative flex flex-col items-center justify-center p-4 md:p-6 rounded-[28px] md:rounded-[36px] shadow-sm border-2 md:border-4 border-white transition-all min-h-[140px] md:min-h-[180px]",
               act.bg
             )}
           >
-            <span className="text-5xl md:text-7xl mb-2 md:mb-4 group-hover:scale-110 transition-transform">{act.emoji}</span>
-            <span className={cn("text-xl md:text-2xl font-bold font-kids", act.text)}>{act.label}</span>
+            <span className="text-4xl md:text-5xl mb-2 group-hover:scale-110 transition-transform">{act.emoji}</span>
+            <span className={cn("text-lg md:text-xl font-bold font-kids", act.text)}>{act.label}</span>
           </motion.button>
         ))}
       </div>

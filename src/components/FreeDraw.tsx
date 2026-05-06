@@ -135,48 +135,42 @@ export default function FreeDraw({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <div className="flex flex-col h-full space-y-6">
-      <header className="flex items-center justify-between px-4 gap-2">
+    <div className="flex flex-col h-full space-y-3 font-kids">
+      <header className="flex items-center justify-between px-3 h-14 bg-white border-b border-slate-100 shrink-0 gap-2">
         <motion.button 
-          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={onBack} 
-          className="p-3 md:p-4 bg-white rounded-full shadow-sm border-2 border-slate-50 shrink-0"
+          className="p-2 bg-slate-50 rounded-xl text-slate-400 border border-slate-100 shrink-0"
         >
-          <ArrowLeft className="w-5 h-5 md:w-6 md:h-6 text-slate-400" />
+          <ArrowLeft className="w-5 h-5" />
         </motion.button>
-        <div className="text-center hidden sm:block">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-brand-orange-text tracking-tight uppercase">Desenhar</h2>
-        </div>
-        <div className="flex gap-2 flex-1 justify-end">
+        
+        <div className="flex items-center gap-1.5 flex-1 justify-end">
           <motion.button 
             whileTap={{ scale: 0.9 }}
             onClick={clear} 
-            className="p-3 md:p-4 bg-white rounded-full shadow-sm border-2 border-slate-50"
-            title="Limpar tela"
+            className="p-2 bg-white rounded-xl text-slate-400 border border-slate-100"
           >
-            <RefreshCw className="w-5 h-5 md:w-6 md:h-6 text-slate-400" />
+            <RefreshCw className="w-5 h-5" />
           </motion.button>
           <motion.button 
             whileTap={{ scale: 0.9 }}
             onClick={download} 
-            className="p-3 md:p-4 bg-brand-blue rounded-full text-brand-blue-text shadow-sm border-2 md:border-4 border-white"
-            title="Baixar desenho"
+            className="p-2 bg-brand-blue text-white rounded-xl shadow-sm"
           >
-            <Download className="w-5 h-5 md:w-6 md:h-6" />
+            <Download className="w-5 h-5" />
           </motion.button>
           <motion.button 
             whileTap={{ scale: 0.9 }}
             onClick={save} 
-            className="p-3 md:p-4 bg-brand-orange rounded-full text-brand-orange-text shadow-sm border-2 md:border-4 border-white"
-            title="Celebrar"
+            className="p-2 bg-brand-orange text-white rounded-xl shadow-sm"
           >
-            <Save className="w-5 h-5 md:w-6 md:h-6" />
+            <Save className="w-5 h-5" />
           </motion.button>
         </div>
       </header>
 
-      <div className="flex-1 bg-white rounded-[32px] md:rounded-[40px] shadow-sm border-4 border-white cursor-crosshair overflow-hidden relative mx-2 md:mx-0">
+      <div className="flex-1 bg-white border-y border-slate-100 cursor-crosshair relative">
         <canvas
           ref={canvasRef}
           onMouseDown={startDraw}
@@ -190,36 +184,37 @@ export default function FreeDraw({ onBack }: { onBack: () => void }) {
         />
       </div>
 
-      <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-[32px] md:rounded-[40px] border-4 border-white shadow-sm flex flex-col md:flex-row items-center gap-4 md:gap-8 justify-center mx-2 md:mx-0">
-        <div className="flex space-x-3 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto scrollbar-hide px-2">
+      <div className="p-3 bg-white border-t border-slate-100 shrink-0 space-y-4">
+        <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-1 scrollbar-hide">
           {COLORS.map(c => (
-            <button
+            <motion.button
               key={c}
+              whileTap={{ scale: 0.8 }}
               onClick={() => {
                 setColor(c);
-                playAudio("Cor trocada", settings.voiceSpeed, settings.volume);
+                playAudio("Pincel", settings.voiceSpeed, settings.volume);
               }}
               className={cn(
-                "w-10 h-10 md:w-14 md:h-14 rounded-full border-4 transition-all shadow-sm shrink-0",
-                color === c ? "border-white scale-110 md:scale-125 shadow-md ring-2 ring-brand-orange" : "border-transparent opacity-80"
+                "w-10 h-10 md:w-12 md:h-12 rounded-full border-4 transition-all shadow-sm shrink-0",
+                color === c ? "border-slate-800 scale-110" : "border-white"
               )}
               style={{ backgroundColor: c }}
             />
           ))}
         </div>
         
-        <div className="flex items-center space-x-6 px-4 md:px-8 border-t-2 md:border-t-0 md:border-l-2 border-slate-100 pt-4 md:pt-0">
+        <div className="flex items-center gap-6 justify-center">
           {[10, 20, 30].map((size) => (
             <button
               key={size}
               onClick={() => setBrushSize(size)}
               className={cn(
-                "rounded-full transition-all",
-                brushSize === size ? "bg-brand-orange-text scale-110 md:scale-125" : "bg-slate-200"
+                "rounded-full transition-all bg-slate-200",
+                brushSize === size ? "bg-slate-800 ring-2 ring-offset-2 ring-slate-800" : ""
               )}
               style={{ 
-                width: Math.min(size + 10, 30) + (brushSize === size ? 4 : 0), 
-                height: Math.min(size + 10, 30) + (brushSize === size ? 4 : 0) 
+                width: size / 2 + 10, 
+                height: size / 2 + 10 
               }}
             />
           ))}

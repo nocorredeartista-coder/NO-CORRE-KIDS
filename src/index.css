@@ -25,9 +25,18 @@
 }
 
 @layer base {
+  html, body, #root {
+    @apply h-full w-full overflow-hidden;
+    overscroll-behavior: none;
+  }
+
   body {
-    @apply bg-bg-natural text-slate-700 font-sans overflow-hidden select-none;
+    @apply bg-bg-natural text-slate-700 font-sans select-none;
     -webkit-tap-highlight-color: transparent;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
 
   h1, h2, h3 {
@@ -50,9 +59,28 @@
   animation: float 4s ease-in-out infinite;
 }
 
-/* Scrollbar styling for a cleaner look */
-::-webkit-scrollbar {
+/* Custom scrollbar class for components */
+.custom-scrollbar::-webkit-scrollbar {
   width: 8px;
+  display: block !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-brand-lilac-text);
+  opacity: 0.5;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Base scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -60,7 +88,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-brand-lilac/50 rounded-full;
+  @apply bg-slate-200 rounded-full;
 }
 
 /* Prevent text selection and long-press menus for kids */

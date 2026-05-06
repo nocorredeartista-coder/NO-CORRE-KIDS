@@ -17,3 +17,20 @@ export function playAudio(text: string, rate: number = 1, volume: number = 0.5) 
   utterance.volume = volume;
   window.speechSynthesis.speak(utterance);
 }
+
+export function playAudioAsync(text: string, rate: number = 1, volume: number = 0.5): Promise<void> {
+  return new Promise((resolve) => {
+    if (!('speechSynthesis' in window)) {
+      resolve();
+      return;
+    }
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'pt-BR';
+    utterance.rate = rate;
+    utterance.volume = volume;
+    utterance.onend = () => resolve();
+    utterance.onerror = () => resolve();
+    window.speechSynthesis.speak(utterance);
+  });
+}

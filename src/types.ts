@@ -8,6 +8,7 @@ export type ActivityType =
   | 'draw' 
   | 'routine'
   | 'parents'
+  | 'numbers'
   | 'locked';
 
 export interface Task {

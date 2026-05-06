@@ -108,149 +108,155 @@ export default function SpeechModule({ onBack }: { onBack: () => void }) {
     audio.play();
   };
 
+  const handleNext = () => {
+    const currentIndex = filteredWords.indexOf(selectedWord);
+    const nextIndex = (currentIndex + 1) % filteredWords.length;
+    setSelectedWord(filteredWords[nextIndex]);
+    setRecordedBlob(null);
+  };
+
+  const handlePrev = () => {
+    const currentIndex = filteredWords.indexOf(selectedWord);
+    const prevIndex = (currentIndex - 1 + filteredWords.length) % filteredWords.length;
+    setSelectedWord(filteredWords[prevIndex]);
+    setRecordedBlob(null);
+  };
+
   return (
-    <div className="flex flex-col h-full space-y-6">
-      <header className="flex items-center justify-between px-4">
+    <div className="flex flex-col h-full space-y-4">
+      <header className="flex items-center justify-between px-3 h-14 shrink-0 gap-2">
         <motion.button 
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={onBack} 
-          className="p-4 bg-white rounded-full shadow-sm border-2 border-slate-50"
+          className="p-2 md:p-3 bg-white rounded-full shadow-sm border-2 border-slate-50 shrink-0"
         >
-          <ArrowLeft className="w-6 h-6 text-slate-400" />
+          <ArrowLeft className="w-5 h-5 text-slate-400" />
         </motion.button>
-        <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-brand-yellow-text tracking-tight uppercase">Falar</h2>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest leading-none">Repita as palavras para praticar</p>
+        <div className="text-center truncate flex-1">
+          <h2 className="text-lg md:text-2xl font-black text-brand-yellow-text uppercase tracking-tight truncate">Falar</h2>
         </div>
-        <div className="w-12" />
+        <div className="w-10" />
       </header>
 
       {/* Categories */}
-      <div className="flex justify-center gap-2 px-4 overflow-x-auto pb-2">
+      <div className="flex justify-center gap-1.5 px-3 overflow-x-auto custom-scrollbar pb-1 scrollbar-hide shrink-0">
         {CATEGORIES.map(cat => (
           <motion.button
             key={cat.id}
-            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => {
               setSelectedCategory(cat.id);
-              setSelectedWord(WORDS.find(w => cat.id === 'all' || w.category === cat.id) || WORDS[0]);
+              const firstMatch = WORDS.find(w => cat.id === 'all' || w.category === cat.id) || WORDS[0];
+              setSelectedWord(firstMatch);
             }}
             className={cn(
-              "px-5 py-2 rounded-2xl font-bold flex items-center gap-2 transition-all border-2 shrink-0",
+              "px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 transition-all border shrink-0",
               selectedCategory === cat.id 
                 ? "bg-brand-yellow border-brand-yellow-text text-brand-yellow-text shadow-sm" 
-                : "bg-white border-transparent text-slate-400"
+                : "bg-white border-slate-100 text-slate-400"
             )}
           >
-            <span>{cat.icon}</span>
-            <span className="text-sm">{cat.label}</span>
+            <span className="text-sm">{cat.icon}</span>
+            <span className="text-[10px] uppercase tracking-wider">{cat.label}</span>
           </motion.button>
         ))}
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center p-6 bg-white rounded-[40px] border-4 border-white shadow-sm relative overflow-hidden">
+      <div className="flex-1 flex flex-col items-center justify-center p-4 bg-white rounded-[32px] border-4 border-white shadow-sm relative overflow-hidden">
         {showMirror && (
           <div className="absolute inset-0 z-0">
             <video 
               ref={videoRef} 
               autoPlay 
               playsInline 
-              className="w-full h-full object-cover opacity-30 grayscale scale-x-[-1]"
+              className="w-full h-full object-cover opacity-20 grayscale scale-x-[-1]"
             />
           </div>
         )}
         
-        <div className="text-center z-10 flex flex-col items-center space-y-6">
-          <motion.div 
-            key={selectedWord.word}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="text-[10rem] md:text-[12rem] drop-shadow-xl animate-float"
-          >
-            {selectedWord.icon}
-          </motion.div>
-          
-          <h3 className="text-5xl md:text-7xl font-kids font-black text-brand-yellow-text tracking-tighter uppercase mb-2">
-            {selectedWord.word}
-          </h3>
-
-          <div className="flex flex-wrap justify-center gap-4">
+        <div className="text-center z-10 flex flex-col items-center space-y-4 w-full">
+          <div className="flex items-center justify-center gap-4 md:gap-8 w-full max-w-lg">
             <motion.button
-              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.8 }}
+              onClick={handlePrev}
+              className="p-4 bg-white rounded-full text-brand-yellow shadow-sm shrink-0 border-2 border-slate-50"
+            >
+               <ArrowLeft className="w-6 h-6" />
+            </motion.button>
+
+            <motion.div 
+              key={selectedWord.word}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="flex-1 aspect-square max-w-[200px] bg-white rounded-[32px] border-4 border-brand-yellow/20 flex items-center justify-center text-7xl md:text-9xl drop-shadow-sm select-none"
+            >
+              {selectedWord.icon}
+            </motion.div>
+
+            <motion.button
+              whileTap={{ scale: 0.8 }}
+              onClick={handleNext}
+              className="p-4 bg-white rounded-full text-brand-yellow shadow-sm shrink-0 border-2 border-slate-50 rotate-180"
+            >
+               <ArrowLeft className="w-6 h-6" />
+            </motion.button>
+          </div>
+          
+          <div className="text-center">
+            <h3 className="text-3xl md:text-5xl font-kids font-black text-brand-yellow-text tracking-tight uppercase truncate max-w-full">
+              {selectedWord.word}
+            </h3>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-3">
+            <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => playAudio(selectedWord.word, settings.voiceSpeed, settings.volume)}
-              className="flex flex-col items-center gap-2 p-5 bg-brand-yellow rounded-full text-brand-yellow-text shadow-sm hover:scale-105 transition-all"
+              className="flex items-center gap-2 px-6 py-3 bg-brand-yellow rounded-2xl text-brand-yellow-text font-bold shadow-sm"
             >
-              <Play className="w-8 h-8 fill-current" />
-              <span className="font-bold text-[10px] uppercase tracking-widest px-2">Ouvir</span>
+              <Play className="w-5 h-5 fill-current" />
+              <span className="text-xs uppercase tracking-widest">Ouvir</span>
             </motion.button>
 
             <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleMirror}
-              className={cn(
-                "flex flex-col items-center gap-2 p-5 rounded-full shadow-sm transition-all",
-                showMirror ? "bg-slate-700 text-white" : "bg-slate-100 text-slate-400"
-              )}
-            >
-              {showMirror ? <EyeOff className="w-8 h-8" /> : <Eye className="w-8 h-8" />}
-              <span className="font-bold text-[10px] uppercase tracking-widest px-2">Espelho</span>
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onMouseDown={startRecording}
               onMouseUp={stopRecording}
               onTouchStart={startRecording}
               onTouchEnd={stopRecording}
               className={cn(
-                "flex flex-col items-center gap-2 p-5 rounded-full shadow-md transition-all scale-110",
+                "flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all shadow-sm",
                 isRecording ? "bg-red-500 text-white animate-pulse" : "bg-brand-lilac text-brand-lilac-text"
               )}
             >
-              <Mic className="w-8 h-8" />
-              <span className="font-bold text-[10px] uppercase tracking-widest px-2">{isRecording ? 'Gravando' : 'Falar'}</span>
+              <Mic className="w-5 h-5" />
+              <span className="text-xs uppercase tracking-widest">{isRecording ? 'Gravando' : 'Falar'}</span>
             </motion.button>
 
             {recordedBlob && (
               <motion.button
-                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={playRecorded}
-                className="flex flex-col items-center gap-2 p-5 bg-brand-mint rounded-full text-brand-mint-text shadow-sm hover:scale-105 transition-all"
+                className="flex items-center gap-2 px-6 py-3 bg-brand-mint rounded-2xl text-brand-mint-text font-bold shadow-sm"
               >
-                <Volume2 className="w-8 h-8" />
-                <span className="font-bold text-[10px] uppercase tracking-widest px-2">Meu som</span>
+                <Volume2 className="w-5 h-5" />
+                <span className="text-xs uppercase tracking-widest">Meu som</span>
               </motion.button>
             )}
+
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={toggleMirror}
+              className={cn(
+                "flex items-center gap-2 px-4 py-3 rounded-2xl transition-all border-2",
+                showMirror ? "bg-slate-700 border-slate-700 text-white" : "bg-white border-slate-100 text-slate-300"
+              )}
+            >
+              {showMirror ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </motion.button>
           </div>
         </div>
-      </div>
-
-      <div className="flex justify-center space-x-4 p-4 bg-white/50 rounded-[40px] border-4 border-white overflow-x-auto min-h-0">
-        {filteredWords.map(w => (
-          <motion.button
-            key={w.word}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => {
-              setSelectedWord(w);
-              setRecordedBlob(null);
-              playAudio(w.word, settings.voiceSpeed, settings.volume);
-              trackProgress('word', w.word);
-            }}
-            className={cn(
-              "w-20 h-20 bg-white rounded-2xl flex items-center justify-center text-4xl shadow-sm transition-all border-2 shrink-0",
-              selectedWord.word === w.word ? "border-brand-yellow scale-110 shadow-md" : "border-transparent opacity-60"
-            )}
-          >
-            {w.icon}
-          </motion.button>
-        ))}
       </div>
     </div>
   );
