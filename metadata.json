@@ -1,0 +1,6 @@
+{
+  "name": "No Corre Kids",
+  "description": "Aplicativo infantil neuroinclusivo para desenvolvimento da fala, leitura, escrita e regulação emocional.",
+  "requestFramePermissions": ["microphone", "camera"],
+  "majorCapabilities": []
+}
