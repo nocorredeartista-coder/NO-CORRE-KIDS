@@ -83,7 +83,7 @@ function AppContent() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="flex-1 w-full max-w-7xl mx-auto p-4 md:p-8 z-10 overflow-hidden"
+          className="flex-1 w-full max-w-7xl mx-auto p-2 md:p-8 z-10 overflow-hidden"
         >
           {renderActivity()}
         </motion.main>
@@ -124,65 +124,59 @@ function Home({ onSelect }: { onSelect: (activity: ActivityType) => void }) {
   return (
     <div className="flex flex-col h-full space-y-6">
       {/* Dashboard Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 px-4">
         {/* Next Task Card */}
         <motion.div 
-            whileHover={{ y: -5 }}
+            whileHover={{ y: -2 }}
             onClick={() => onSelect('routine')}
-            className="bg-white p-6 rounded-[32px] border-4 border-slate-100 shadow-sm flex items-center gap-6 cursor-pointer"
+            className="bg-white p-3 md:p-4 rounded-[24px] md:rounded-[32px] border-2 md:border-4 border-slate-100 shadow-sm flex items-center gap-3 md:gap-4 cursor-pointer"
         >
-          <div className="bg-brand-yellow/20 p-4 rounded-3xl text-4xl">
+          <div className="bg-brand-yellow/20 p-2 md:p-3 rounded-xl md:rounded-2xl text-2xl md:text-3xl shrink-0">
             {nextTask?.icon || '✅'}
           </div>
           <div className="flex flex-col overflow-hidden">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Próxima Tarefa</span>
-            <span className="text-xl font-black text-slate-700 truncate">
+            <span className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Rotina</span>
+            <span className="text-sm md:text-lg font-black text-slate-700 truncate">
                {nextTask ? nextTask.label : "Tudo pronto!"}
-            </span>
-            <span className="text-[10px] font-bold text-slate-400 mt-1 uppercase">
-                Você já fez {completedCount} hoje!
             </span>
           </div>
         </motion.div>
 
         {/* Emotion Card */}
         <motion.div 
-            whileHover={{ y: -5 }}
+            whileHover={{ y: -2 }}
             onClick={() => onSelect('emotions')}
-            className="bg-white p-6 rounded-[32px] border-4 border-slate-100 shadow-sm flex items-center gap-6 cursor-pointer"
+            className="bg-white p-3 md:p-4 rounded-[24px] md:rounded-[32px] border-2 md:border-4 border-slate-100 shadow-sm flex items-center gap-3 md:gap-4 cursor-pointer"
         >
-          <div className="bg-brand-pink/20 p-4 rounded-3xl text-4xl">💜</div>
+          <div className="bg-brand-pink/20 p-2 md:p-3 rounded-xl md:rounded-2xl text-2xl md:text-3xl shrink-0">💜</div>
           <div className="flex flex-col">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Como você está?</span>
-            <span className="text-xl font-black text-brand-pink-text">
+            <span className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Humor</span>
+            <span className="text-sm md:text-lg font-black text-brand-pink-text">
                 {progress.currentEmotion || 'Calmo'}
-            </span>
-            <span className="text-[10px] font-bold text-slate-400 mt-1 uppercase">
-                Toque para mudar
             </span>
           </div>
         </motion.div>
 
-        {/* Safe Time Card */}
-        <div className="bg-white p-6 rounded-[32px] border-4 border-slate-100 shadow-sm flex items-center gap-6">
-          <div className="bg-brand-mint/20 p-4 rounded-3xl text-4xl">⏳</div>
+        {/* Safe Time Card - Visible only on larger screens or as a small pill elsewhere */}
+        <div className="hidden lg:flex bg-white p-4 rounded-[32px] border-4 border-slate-100 shadow-sm items-center gap-4">
+          <div className="bg-brand-mint/20 p-3 rounded-2xl text-3xl">⏳</div>
           <div className="flex flex-col">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Tempo Seguro</span>
-            <span className="text-xl font-black text-brand-mint-text">
+            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Tempo Seguro</span>
+            <span className="text-lg font-black text-brand-mint-text">
                 {timeLeft} minutos
-            </span>
-            <span className="text-[10px] font-bold text-slate-400 mt-1 uppercase">
-                Quase na hora de pausar
             </span>
           </div>
         </div>
       </div>
 
-      <header className="px-4">
-        <h2 className="text-3xl font-black text-slate-800 uppercase tracking-tighter">Escolha uma Atividade</h2>
+      <header className="px-4 flex items-center justify-between">
+        <h2 className="text-xl md:text-2xl font-black text-slate-800 uppercase tracking-tighter">O que vamos fazer?</h2>
+        <div className="flex items-center gap-2 bg-brand-mint/10 px-3 py-1 rounded-full border border-brand-mint/20">
+            <span className="text-[9px] md:text-[10px] font-black text-brand-mint-text uppercase">⏳ {timeLeft}m</span>
+        </div>
       </header>
 
-      <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-6 w-full px-4 overflow-y-auto pb-8">
+      <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full px-4 overflow-y-auto pb-4">
         {activities.map((act, idx) => (
           <motion.button
             key={act.id}
@@ -201,48 +195,39 @@ function Home({ onSelect }: { onSelect: (activity: ActivityType) => void }) {
               damping: 20 
             }}
             className={cn(
-              "group relative flex flex-col items-center justify-center p-8 rounded-[40px] shadow-sm border-4 border-white transition-all",
+              "group relative flex flex-col items-center justify-center p-6 md:p-8 rounded-[32px] md:rounded-[40px] shadow-sm border-4 border-white transition-all",
               act.bg
             )}
           >
-            <span className="text-6xl md:text-7xl mb-4 group-hover:scale-110 transition-transform">{act.emoji}</span>
-            <span className={cn("text-2xl font-bold font-kids", act.text)}>{act.label}</span>
+            <span className="text-5xl md:text-7xl mb-2 md:mb-4 group-hover:scale-110 transition-transform">{act.emoji}</span>
+            <span className={cn("text-xl md:text-2xl font-bold font-kids", act.text)}>{act.label}</span>
           </motion.button>
         ))}
       </div>
 
-      <footer className="mt-4 flex justify-between items-end px-4">
-        <div className="flex items-center gap-6">
-          <div className="w-20 h-20 bg-brand-blue rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-md relative">
+      <footer className="mt-2 flex justify-between items-center px-4 pb-4">
+        <div className="flex items-center gap-2">
+          <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center overflow-hidden border-2 border-white shadow-sm relative shrink-0">
             <motion.div 
               animate={{ rotate: [0, 5, -5, 0] }}
               transition={{ repeat: Infinity, duration: 4 }}
-              className="relative w-12 h-12 bg-orange-200 rounded-full"
+              className="relative w-8 h-8 bg-orange-200 rounded-full"
             >
-              <div className="absolute top-3 left-2 w-1.5 h-1.5 bg-slate-800 rounded-full" />
-              <div className="absolute top-3 right-2 w-1.5 h-1.5 bg-slate-800 rounded-full" />
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-4 h-2 border-b-2 border-slate-800 rounded-full" />
+              <div className="absolute top-2 left-1 w-0.5 h-0.5 bg-slate-800 rounded-full" />
+              <div className="absolute top-2 right-1 w-0.5 h-0.5 bg-slate-800 rounded-full" />
+              <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-2 h-1 border-b-2 border-slate-800 rounded-full" />
             </motion.div>
           </div>
-          <div className="hidden sm:block bg-white px-6 py-3 rounded-2xl shadow-sm border-2 border-slate-100">
-            <p className="text-lg font-bold text-slate-500 italic">“Tudo bem descansar um pouco!”</p>
-          </div>
+          <p className="text-[10px] md:text-sm font-bold text-slate-400 italic">Pausas também ajudam 💜</p>
         </div>
 
-        <div className="flex flex-col items-end gap-3">
-          <button 
-            onClick={() => onSelect('parents')}
-            className="flex items-center gap-3 bg-white px-5 py-2 rounded-2xl shadow-sm border-2 border-slate-100 hover:border-brand-lilac transition-all"
-          >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            >
-              <Settings className="w-5 h-5 text-slate-400" />
-            </motion.div>
-            <span className="text-sm font-bold text-slate-500 uppercase tracking-widest">Responsáveis</span>
-          </button>
-        </div>
+        <button 
+          onClick={() => onSelect('parents')}
+          className="flex items-center gap-2 bg-white px-3 py-2 rounded-xl shadow-sm border-2 border-slate-100 hover:border-brand-lilac transition-all"
+        >
+          <Settings className="w-4 h-4 text-slate-400" />
+          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">Pais</span>
+        </button>
       </footer>
     </div>
   );

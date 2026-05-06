@@ -40,26 +40,25 @@ export default function Emotions({ onBack, onSuggest }: { onBack: () => void, on
 
   return (
     <div className="flex flex-col h-full space-y-6">
-      <header className="flex items-center justify-between px-4">
+      <header className="flex items-center justify-between px-4 gap-2">
         <motion.button 
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={onBack} 
-          className="p-4 bg-white rounded-full shadow-sm border-2 border-slate-50"
+          className="p-3 md:p-4 bg-white rounded-full shadow-sm border-2 border-slate-50 shrink-0"
         >
-          <ArrowLeft className="w-6 h-6 text-slate-400" />
+          <ArrowLeft className="w-5 h-5 md:w-6 md:h-6 text-slate-400" />
         </motion.button>
-        <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-brand-pink-text tracking-tight uppercase">Emoções</h2>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest leading-none">Como você está se sentindo?</p>
+        <div className="text-center hidden sm:block">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-brand-pink-text tracking-tight uppercase">Emoções</h2>
         </div>
-        <div className="w-12" />
+        <div className="w-10 sm:w-12" />
       </header>
 
-      <div className="flex-1 flex flex-col items-center justify-center space-y-8 overflow-y-auto pb-8">
-        <h3 className="text-3xl md:text-5xl font-kids text-slate-700 text-center max-w-lg">Como você está se sentindo hoje?</h3>
+      <div className="flex-1 flex flex-col items-center justify-center space-y-4 md:space-y-8 overflow-y-auto pb-8">
+        <h3 className="text-2xl md:text-5xl font-kids text-slate-700 text-center max-w-lg px-4 italic leading-tight">Como você está se sentindo?</h3>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-3xl px-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 w-full max-w-3xl px-4">
           {EMOJIS.map((mood) => (
             <motion.button
               key={mood.id}
@@ -67,13 +66,13 @@ export default function Emotions({ onBack, onSuggest }: { onBack: () => void, on
               whileTap={{ scale: 0.95 }}
               onClick={() => handleMoodClick(mood)}
               className={cn(
-                "flex flex-col items-center justify-center p-8 rounded-[40px] transition-all shadow-sm border-4 border-white",
+                "flex flex-col items-center justify-center p-4 md:p-8 rounded-[32px] md:rounded-[40px] transition-all shadow-sm border-2 md:border-4 border-white",
                 mood.bg,
-                selectedMood?.id === mood.id ? "ring-4 ring-white shadow-xl scale-110 z-10" : "opacity-90"
+                selectedMood?.id === mood.id ? "ring-4 ring-white shadow-xl scale-105 md:scale-110 z-10" : "opacity-90"
               )}
             >
-              <span className="text-7xl mb-4 group-hover:rotate-12 transition-transform">{mood.icon}</span>
-              <span className={cn("font-kids font-bold text-2xl", mood.text)}>{mood.label}</span>
+              <span className="text-5xl md:text-7xl mb-2 md:mb-4 transition-transform">{mood.icon}</span>
+              <span className={cn("font-kids font-bold text-lg md:text-2xl", mood.text)}>{mood.label}</span>
             </motion.button>
           ))}
         </div>
@@ -82,11 +81,11 @@ export default function Emotions({ onBack, onSuggest }: { onBack: () => void, on
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-8 rounded-[40px] shadow-sm border-4 border-white text-center space-y-6 max-w-md mx-4"
+            className="bg-white p-6 md:p-8 rounded-[32px] md:rounded-[40px] shadow-sm border-4 border-white text-center space-y-4 md:space-y-6 max-w-md mx-4"
           >
-            <p className="text-2xl font-kids text-slate-500 italic">
+            <p className="text-xl md:text-2xl font-kids text-slate-500 italic">
               {selectedMood.id === 'restless' || selectedMood.id === 'angry' 
-                ? "Respirar fundo pode ajudar você a se sentir melhor!" 
+                ? "Respirar fundo pode ajudar!" 
                 : "Que legal! Vamos fazer uma atividade?"}
             </p>
             <motion.button
@@ -94,7 +93,7 @@ export default function Emotions({ onBack, onSuggest }: { onBack: () => void, on
               whileTap={{ scale: 0.9 }}
               onClick={() => onSuggest(selectedMood.suggestion as ActivityType)}
               className={cn(
-                "w-full py-5 rounded-2xl text-white font-kids font-bold text-2xl shadow-sm transition-all",
+                "w-full py-4 md:py-5 rounded-2xl text-white font-kids font-bold text-xl md:text-2xl shadow-sm transition-all",
                 selectedMood.text.replace('text-', 'bg-').replace('-text', '')
               )}
             >

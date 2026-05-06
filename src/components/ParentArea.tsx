@@ -51,34 +51,34 @@ export default function ParentArea({ onBack, onActivityChange }: { onBack: () =>
   }, [progress.routineTasks]);
 
   return (
-    <div className="flex flex-col h-full space-y-6 bg-slate-50">
-      <header className="flex items-center justify-between p-4 bg-white shadow-sm font-kids">
-        <button onClick={onBack} className="p-4 bg-slate-100 rounded-2xl text-slate-400 hover:text-brand-blue transition-colors">
-          <ArrowLeft className="w-6 h-6" />
+    <div className="flex flex-col h-full space-y-4 md:space-y-6 bg-slate-50">
+      <header className="flex items-center justify-between p-3 md:p-4 bg-white shadow-sm font-kids gap-2">
+        <button onClick={onBack} className="p-3 md:p-4 bg-slate-100 rounded-xl md:rounded-2xl text-slate-400 hover:text-brand-blue transition-colors shrink-0">
+          <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" />
         </button>
-        <h2 className="text-2xl font-black text-slate-700 uppercase tracking-tight">Responsáveis</h2>
-        <div className="w-12" />
+        <h2 className="text-xl md:text-2xl font-black text-slate-700 uppercase tracking-tight truncate">Responsáveis</h2>
+        <div className="w-10 md:w-12" />
       </header>
 
-      <div className="flex-1 p-4 lg:p-8 overflow-y-auto pb-12 space-y-8 custom-scrollbar">
+      <div className="flex-1 p-3 md:p-8 overflow-y-auto pb-12 space-y-6 md:space-y-8 custom-scrollbar">
         
         {/* Quick Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-6 bg-brand-lilac/10 rounded-[32px] border-2 border-brand-lilac/20">
-                <p className="text-[10px] font-black text-brand-lilac-text uppercase tracking-widest mb-1">Letras Praticadas</p>
-                <p className="text-3xl font-black text-brand-lilac-text">{progress.lettersPracticed.length}</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
+            <div className="p-4 md:p-6 bg-brand-lilac/10 rounded-[24px] md:rounded-[32px] border-2 border-brand-lilac/20">
+                <p className="text-[8px] md:text-[10px] font-black text-brand-lilac-text uppercase tracking-widest mb-1">Letras</p>
+                <p className="text-2xl md:text-3xl font-black text-brand-lilac-text">{progress.lettersPracticed.length}</p>
             </div>
-            <div className="p-6 bg-brand-blue/10 rounded-[32px] border-2 border-brand-blue/20">
-                <p className="text-[10px] font-black text-brand-blue-text uppercase tracking-widest mb-1">Fases Concluídas</p>
-                <p className="text-3xl font-black text-brand-blue-text">{(progress.activitiesCount as any)['word'] || 0}</p>
+            <div className="p-4 md:p-6 bg-brand-blue/10 rounded-[24px] md:rounded-[32px] border-2 border-brand-blue/20">
+                <p className="text-[8px] md:text-[10px] font-black text-brand-blue-text uppercase tracking-widest mb-1">Fases</p>
+                <p className="text-2xl md:text-3xl font-black text-brand-blue-text">{(progress.activitiesCount as any)['word'] || 0}</p>
             </div>
-            <div className="p-6 bg-brand-mint/10 rounded-[32px] border-2 border-brand-mint/20">
-                <p className="text-[10px] font-black text-brand-mint-text uppercase tracking-widest mb-1">Tarefas de Hoje</p>
-                <p className="text-3xl font-black text-brand-mint-text">{(Array.isArray(progress.routineTasks) ? progress.routineTasks : []).filter(t => t.completed).length}</p>
+            <div className="p-4 md:p-6 bg-brand-mint/10 rounded-[24px] md:rounded-[32px] border-2 border-brand-mint/20">
+                <p className="text-[8px] md:text-[10px] font-black text-brand-mint-text uppercase tracking-widest mb-1">Hoje</p>
+                <p className="text-2xl md:text-3xl font-black text-brand-mint-text">{(Array.isArray(progress.routineTasks) ? progress.routineTasks : []).filter(t => t.completed).length}</p>
             </div>
-            <div className="p-6 bg-brand-yellow/10 rounded-[32px] border-2 border-brand-yellow/20">
-                <p className="text-[10px] font-black text-brand-yellow-text uppercase tracking-widest mb-1">Total de Tarefas</p>
-                <p className="text-3xl font-black text-brand-yellow-text">{(Array.isArray(progress.routineTasks) ? progress.routineTasks : []).length}</p>
+            <div className="p-4 md:p-6 bg-brand-yellow/10 rounded-[24px] md:rounded-[32px] border-2 border-brand-yellow/20">
+                <p className="text-[8px] md:text-[10px] font-black text-brand-yellow-text uppercase tracking-widest mb-1">Total</p>
+                <p className="text-2xl md:text-3xl font-black text-brand-yellow-text">{(Array.isArray(progress.routineTasks) ? progress.routineTasks : []).length}</p>
             </div>
         </div>
 
